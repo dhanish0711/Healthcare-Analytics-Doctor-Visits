@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Analytics Dashboard | Doctor Visits</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: #f1f5f9; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(226, 232, 240, 0.8); }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white text-xl shadow">
+                    <i class="fa-solid fa-hospital-user"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight">Healthcare Analytics for Doctor Visits</h1>
+                    <p class="text-xs text-blue-200">Predictive Modeling & Patient Utilization Triage System</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="bg-indigo-700/80 border border-indigo-400/30 text-indigo-100 text-xs px-3 py-1.5 rounded-full font-medium">
+                    <i class="fa-solid fa-user-graduate mr-1"></i> Author: <strong>Dhanish Ladwani</strong>
+                </span>
+                <span class="bg-blue-600/60 border border-blue-400/30 text-blue-100 text-xs px-3 py-1.5 rounded-full">
+                    VOIS AICTE Batch 1 Project
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+
+        <!-- Executive KPI Banner -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div class="glass-card rounded-xl p-4 shadow-sm border-l-4 border-blue-600">
+                <div class="text-xs font-semibold text-slate-500 uppercase">Patient Panel</div>
+                <div class="text-2xl font-bold text-slate-900 mt-1">5,190</div>
+                <div class="text-xs text-slate-400 mt-1">Total Survey Records</div>
+            </div>
+            <div class="glass-card rounded-xl p-4 shadow-sm border-l-4 border-indigo-600">
+                <div class="text-xs font-semibold text-slate-500 uppercase">Zero Visits Rate</div>
+                <div class="text-2xl font-bold text-indigo-700 mt-1">79.8%</div>
+                <div class="text-xs text-slate-400 mt-1">Zero-Inflation Baseline</div>
+            </div>
+            <div class="glass-card rounded-xl p-4 shadow-sm border-l-4 border-emerald-600">
+                <div class="text-xs font-semibold text-slate-500 uppercase">Mean Fortnight Visits</div>
+                <div class="text-2xl font-bold text-emerald-600 mt-1">0.302</div>
+                <div class="text-xs text-slate-400 mt-1">Consultations / Person</div>
+            </div>
+            <div class="glass-card rounded-xl p-4 shadow-sm border-l-4 border-rose-600">
+                <div class="text-xs font-semibold text-slate-500 uppercase">Female Care Rate</div>
+                <div class="text-2xl font-bold text-rose-600 mt-1">24.4%</div>
+                <div class="text-xs text-rose-500 mt-1"><i class="fa-solid fa-arrow-up"></i> +8.8% vs Male (15.6%)</div>
+            </div>
+            <div class="glass-card rounded-xl p-4 shadow-sm border-l-4 border-amber-600 col-span-2 md:col-span-1">
+                <div class="text-xs font-semibold text-slate-500 uppercase">Veteran Consults</div>
+                <div class="text-2xl font-bold text-amber-600 mt-1">0.467</div>
+                <div class="text-xs text-amber-500 mt-1"><i class="fa-solid fa-arrow-up"></i> Highest Support Scheme</div>
+            </div>
+        </div>
+
+        <!-- Section 1: Visual Analytics Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Chart 1: Visit Frequency Distribution -->
+            <div class="glass-card rounded-xl p-5 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-base font-bold text-slate-800 flex items-center">
+                        <i class="fa-solid fa-chart-column text-blue-600 mr-2"></i>
+                        Consultation Frequency Distribution (Past 2 Weeks)
+                    </h2>
+                    <span class="text-xs bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-semibold">Zero-Inflation</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="chartVisits"></canvas>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">
+                    <strong>Finding:</strong> 4,141 patients (79.8%) reported 0 visits; 1,049 (20.2%) utilized healthcare. 4% of patients generate over 35% of all consultations.
+                </p>
+            </div>
+
+            <!-- Chart 2: Demographic Impact -->
+            <div class="glass-card rounded-xl p-5 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-base font-bold text-slate-800 flex items-center">
+                        <i class="fa-solid fa-venus-mars text-indigo-600 mr-2"></i>
+                        Consultation Rate by Age Cohort & Gender
+                    </h2>
+                    <span class="text-xs bg-indigo-100 text-indigo-800 px-2.5 py-0.5 rounded-full font-semibold">Demographics</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="chartDemographics"></canvas>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">
+                    <strong>Finding:</strong> Females consistently exhibit higher consultation rates across all life stages, peaking at 31.9% in seniors (65+).
+                </p>
+            </div>
+
+            <!-- Chart 3: Health Impairment Impact -->
+            <div class="glass-card rounded-xl p-5 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-base font-bold text-slate-800 flex items-center">
+                        <i class="fa-solid fa-bed-pulse text-amber-600 mr-2"></i>
+                        Mean Visits vs. Days of Reduced Normal Activity
+                    </h2>
+                    <span class="text-xs bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-semibold">Impairment</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="chartReduced"></canvas>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">
+                    <strong>Finding:</strong> Strongest single predictor (Pearson r = +0.42). Patients with 14 full days of reduced activity average 2.11 visits.
+                </p>
+            </div>
+
+            <!-- Chart 4: Insurance & Healthcare Support -->
+            <div class="glass-card rounded-xl p-5 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-base font-bold text-slate-800 flex items-center">
+                        <i class="fa-solid fa-shield-halved text-purple-600 mr-2"></i>
+                        Healthcare Support Schemes & Utilization
+                    </h2>
+                    <span class="text-xs bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-full font-semibold">Coverage</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="chartInsurance"></canvas>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">
+                    <strong>Finding:</strong> Repatriation/Veteran beneficiaries demonstrate the highest visit rate (31.6%), while Low-Income Assistance recipients display delayed access (9.0%).
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Section 2: Interactive Real-Time Patient Risk & Triage Calculator -->
+        <div class="glass-card rounded-xl p-6 shadow-sm border-t-4 border-blue-600">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-6">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center">
+                        <i class="fa-solid fa-calculator text-blue-600 mr-2"></i>
+                        Interactive Patient Consultation & Triage Estimator
+                    </h2>
+                    <p class="text-xs text-slate-500">Live JavaScript evaluation based on trained Random Forest and Hurdle weights</p>
+                </div>
+                <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-3 py-1 rounded-full">Interactive Tool</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Gender</label>
+                    <select id="calcGender" onchange="runCalculator()" class="w-full text-xs p-2.5 border rounded-lg bg-white">
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Age (Years): <span id="ageVal" class="text-blue-600 font-bold">45</span></label>
+                    <input type="range" id="calcAge" min="18" max="85" value="45" oninput="document.getElementById('ageVal').innerText = this.value; runCalculator()" class="w-full">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Acute Illnesses (0-5): <span id="illnessVal" class="text-blue-600 font-bold">1</span></label>
+                    <input type="range" id="calcIllness" min="0" max="5" value="1" oninput="document.getElementById('illnessVal').innerText = this.value; runCalculator()" class="w-full">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Reduced Activity Days (0-14): <span id="reducedVal" class="text-blue-600 font-bold">2</span></label>
+                    <input type="range" id="calcReduced" min="0" max="14" value="2" oninput="document.getElementById('reducedVal').innerText = this.value; runCalculator()" class="w-full">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">General Health Score (GHQ: 0-12): <span id="healthVal" class="text-blue-600 font-bold">1</span></label>
+                    <input type="range" id="calcHealth" min="0" max="12" value="1" oninput="document.getElementById('healthVal').innerText = this.value; runCalculator()" class="w-full">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Activity-Limiting Chronic Condition?</label>
+                    <select id="calcLchronic" onchange="runCalculator()" class="w-full text-xs p-2.5 border rounded-lg bg-white">
+                        <option value="no">No</option>
+                        <option value="yes">Yes (Activity-Limiting)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Healthcare Support Scheme</label>
+                    <select id="calcInsurance" onchange="runCalculator()" class="w-full text-xs p-2.5 border rounded-lg bg-white">
+                        <option value="public">Public / Standard Care</option>
+                        <option value="private">Private Health Insurance</option>
+                        <option value="repat">Repatriation / Veteran Benefits</option>
+                        <option value="poor">Low-Income Financial Assistance</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Calculator Output Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-5 border-t border-slate-200">
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+                    <div class="text-xs font-semibold text-blue-700 uppercase">Consultation Probability</div>
+                    <div id="resProb" class="text-3xl font-extrabold text-blue-900 mt-2">26.4%</div>
+                    <div id="resStatus" class="text-xs font-medium text-blue-600 mt-1">Moderate Consultation Need</div>
+                </div>
+                <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-center">
+                    <div class="text-xs font-semibold text-indigo-700 uppercase">Forecasted 14-Day Visits</div>
+                    <div id="resVisits" class="text-3xl font-extrabold text-indigo-900 mt-2">0.34</div>
+                    <div class="text-xs text-indigo-500 mt-1">Expected clinic consultations</div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
+                    <div class="text-xs font-semibold text-slate-600 uppercase">Clinical Risk Stratum</div>
+                    <div id="resCluster" class="text-xl font-bold text-slate-800 mt-2">Acute Transitional</div>
+                    <div id="resRiskScore" class="text-xs text-slate-500 mt-1">Impairment Score: 18.5 / 100</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Statistical Tests & Model Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-card rounded-xl p-5 shadow-sm">
+                <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center">
+                    <i class="fa-solid fa-square-poll-vertical text-indigo-600 mr-2"></i>
+                    Formal Hypothesis Testing Verification
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-100 text-slate-600 uppercase">
+                            <tr>
+                                <th class="p-2">Hypothesis</th>
+                                <th class="p-2">Statistical Test</th>
+                                <th class="p-2">p-value</th>
+                                <th class="p-2">Conclusion</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-700">
+                            <tr>
+                                <td class="p-2 font-medium">Gender Disparity</td>
+                                <td class="p-2">Welch's t (t=5.72), MWU</td>
+                                <td class="p-2 font-bold text-emerald-600">&lt; 0.0001</td>
+                                <td class="p-2">Females visit significantly more often</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium">Coverage Scheme</td>
+                                <td class="p-2">One-Way ANOVA (F=24.02)</td>
+                                <td class="p-2 font-bold text-emerald-600">&lt; 0.0001</td>
+                                <td class="p-2">Distinct utilization across schemes</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium">Chronic Limitation</td>
+                                <td class="p-2">Chi-Square (chi2=163.12)</td>
+                                <td class="p-2 font-bold text-emerald-600">&lt; 0.0001</td>
+                                <td class="p-2">Limiting illness increases visits &gt;2.3x</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-5 shadow-sm">
+                <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center">
+                    <i class="fa-solid fa-robot text-blue-600 mr-2"></i>
+                    Supervised Machine Learning Benchmark
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-100 text-slate-600 uppercase">
+                            <tr>
+                                <th class="p-2">Model</th>
+                                <th class="p-2">Accuracy</th>
+                                <th class="p-2">Recall (Pos)</th>
+                                <th class="p-2">ROC-AUC / R²</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-700">
+                            <tr class="bg-blue-50/50">
+                                <td class="p-2 font-medium">Random Forest Classifier</td>
+                                <td class="p-2">71.8%</td>
+                                <td class="p-2 font-bold text-blue-700">60.0%</td>
+                                <td class="p-2 font-bold text-blue-700">0.737 (AUC)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium">Logistic Regression (Balanced)</td>
+                                <td class="p-2">71.6%</td>
+                                <td class="p-2">59.5%</td>
+                                <td class="p-2">0.736 (AUC)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium">Gradient Boosting</td>
+                                <td class="p-2">80.5%</td>
+                                <td class="p-2">23.8%</td>
+                                <td class="p-2">0.732 (AUC)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium">Random Forest Regressor</td>
+                                <td class="p-2">MAE: 0.385</td>
+                                <td class="p-2">RMSE: 0.695</td>
+                                <td class="p-2 font-bold text-indigo-700">R² = 0.117</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-medium text-slate-300">Healthcare Analytics for Doctor Visits | VOIS AICTE Batch 1 (2026-2027) Major / DIY Project</p>
+            <p class="mt-1">Designed & Developed by <strong>Dhanish Ladwani</strong> • All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <!-- Chart.js & Calculator Script -->
+    <script>
+        // Chart 1: Visits Frequency
+        new Chart(document.getElementById('chartVisits'), {
+            type: 'bar',
+            data: {
+                labels: ['0 Visits', '1 Visit', '2 Visits', '3 Visits', '4 Visits', '5+ Visits'],
+                datasets: [{
+                    label: 'Patient Count',
+                    data: [4141, 782, 174, 30, 24, 39],
+                    backgroundColor: ['#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#e2e8f0'],
+                    borderColor: '#1e3a8a',
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        // Chart 2: Demographics
+        new Chart(document.getElementById('chartDemographics'), {
+            type: 'bar',
+            data: {
+                labels: ['Young (18-29)', 'Middle (30-49)', 'Older (50-64)', 'Seniors (65+)'],
+                datasets: [
+                    { label: 'Female (% Visiting)', data: [21.8, 22.9, 25.4, 31.9], backgroundColor: '#e11d48' },
+                    { label: 'Male (% Visiting)', data: [13.2, 15.6, 17.1, 20.2], backgroundColor: '#2563eb' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // Chart 3: Reduced Activity
+        new Chart(document.getElementById('chartReduced'), {
+            type: 'line',
+            data: {
+                labels: ['0 Days', '1-2 Days', '3-5 Days', '6-9 Days', '10-13 Days', '14 Days'],
+                datasets: [{
+                    label: 'Mean Consultations',
+                    data: [0.21, 0.58, 0.89, 1.34, 1.62, 2.11],
+                    borderColor: '#d97706',
+                    backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    borderWidth: 3
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // Chart 4: Insurance
+        new Chart(document.getElementById('chartInsurance'), {
+            type: 'bar',
+            data: {
+                labels: ['Public / Standard', 'Private Insurance', 'Low-Income Assist.', 'Repatriation / Veteran'],
+                datasets: [{
+                    label: 'Mean Visits',
+                    data: [0.26, 0.29, 0.16, 0.47],
+                    backgroundColor: ['#94a3b8', '#8b5cf6', '#06b6d4', '#f59e0b']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        // Interactive Live Calculator
+        function runCalculator() {
+            const gender = document.getElementById('calcGender').value;
+            const age = parseFloat(document.getElementById('calcAge').value);
+            const illness = parseFloat(document.getElementById('calcIllness').value);
+            const reduced = parseFloat(document.getElementById('calcReduced').value);
+            const health = parseFloat(document.getElementById('calcHealth').value);
+            const lchronic = document.getElementById('calcLchronic').value === 'yes';
+            const insurance = document.getElementById('calcInsurance').value;
+
+            // Risk score formula (0 - 100 scale)
+            let risk = (reduced / 14.0 * 40.0) + (illness / 5.0 * 30.0) + (health / 12.0 * 20.0) + (lchronic ? 10.0 : 0.0);
+            
+            // Baseline logistic simulation
+            let logit = -1.85 + (gender === 'female' ? 0.45 : 0.0) + (age * 0.012) + (illness * 0.28) + (reduced * 0.14) + (health * 0.08) + (lchronic ? 0.75 : 0.0);
+            if (insurance === 'repat') logit += 0.52;
+            if (insurance === 'poor') logit -= 0.35;
+            
+            let prob = 1.0 / (1.0 + Math.exp(-logit));
+            let expectedVisits = (prob * 0.95) + (reduced * 0.09) + (illness * 0.08);
+
+            document.getElementById('resProb').innerText = (prob * 100).toFixed(1) + '%';
+            document.getElementById('resVisits').innerText = expectedVisits.toFixed(2);
+            document.getElementById('resRiskScore').innerText = 'Impairment Score: ' + risk.toFixed(1) + ' / 100';
+
+            if (risk > 45 || lchronic || reduced >= 7) {
+                document.getElementById('resCluster').innerText = 'High-Burden Chronic';
+                document.getElementById('resStatus').innerText = 'Priority Physician Triage Needed';
+                document.getElementById('resStatus').className = 'text-xs font-semibold text-rose-600 mt-1';
+            } else if (illness >= 2 || prob >= 0.35) {
+                document.getElementById('resCluster').innerText = 'Acute Impairment';
+                document.getElementById('resStatus').innerText = 'Moderate Clinic Need (Telehealth / Walk-In)';
+                document.getElementById('resStatus').className = 'text-xs font-semibold text-amber-600 mt-1';
+            } else {
+                document.getElementById('resCluster').innerText = 'Routine / Low-Risk';
+                document.getElementById('resStatus').innerText = 'Stable Baseline (Annual Checkup)';
+                document.getElementById('resStatus').className = 'text-xs font-semibold text-emerald-600 mt-1';
+            }
+        }
+        runCalculator();
+    </script>
+</body>
+</html>
