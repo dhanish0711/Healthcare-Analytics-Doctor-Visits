@@ -1,0 +1,40 @@
+{
+    "gender_disparity": {
+        "welch_t_test": {
+            "t_statistic": 5.7217,
+            "p_value": 1.114114447790661e-08
+        },
+        "mann_whitney_u": {
+            "u_statistic": 3655194.5,
+            "p_value": 6.338282349980026e-15
+        },
+        "chi2_test": {
+            "chi2_statistic": 61.5328,
+            "p_value": 4.354318552041979e-15,
+            "dof": 1
+        },
+        "interpretation": "Statistically significant: Females utilize healthcare significantly more often than males (p < 0.001)."
+    },
+    "insurance_program_effect": {
+        "one_way_anova": {
+            "f_statistic": 24.0199,
+            "p_value": 1.9674092505845817e-15
+        },
+        "kruskal_wallis": {
+            "h_statistic": 138.0629,
+            "p_value": 9.88819875240744e-30
+        },
+        "interpretation": "Statistically significant: Consultation frequency differs significantly across insurance types (p < 0.001), with Repatriation/Veteran recipients having the highest average utilization."
+    },
+    "chronic_condition_effect": {
+        "chi2_contingency": {
+            "chi2_statistic": 163.1207,
+            "p_value": 3.791295777018159e-36
+        },
+        "lchronic_mann_whitney": {
+            "u_statistic": 1629677.0,
+            "p_value": 1.1970789999983834e-23
+        },
+        "interpretation": "Statistically significant: Patients with activity-limiting chronic illnesses visit doctors over 2.3x more frequently than those without."
+    }
+}
