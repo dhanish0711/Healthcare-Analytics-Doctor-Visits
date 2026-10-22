@@ -1,0 +1,124 @@
+{
+    "best_classifier": "Random Forest Classifier",
+    "classification_metrics": {
+        "Logistic Regression": {
+            "accuracy": 0.7158,
+            "precision": 0.3731,
+            "recall": 0.5952,
+            "f1_score": 0.4587,
+            "roc_auc": 0.736,
+            "confusion_matrix": [
+                [
+                    618,
+                    210
+                ],
+                [
+                    85,
+                    125
+                ]
+            ]
+        },
+        "Random Forest Classifier": {
+            "accuracy": 0.7177,
+            "precision": 0.3761,
+            "recall": 0.6,
+            "f1_score": 0.4624,
+            "roc_auc": 0.7373,
+            "confusion_matrix": [
+                [
+                    619,
+                    209
+                ],
+                [
+                    84,
+                    126
+                ]
+            ]
+        },
+        "Gradient Boosting": {
+            "accuracy": 0.8054,
+            "precision": 0.5435,
+            "recall": 0.2381,
+            "f1_score": 0.3311,
+            "roc_auc": 0.7324,
+            "confusion_matrix": [
+                [
+                    786,
+                    42
+                ],
+                [
+                    160,
+                    50
+                ]
+            ]
+        }
+    },
+    "best_regressor": "Random Forest Regressor",
+    "regression_metrics": {
+        "Ridge Regression": {
+            "mae": 0.3931,
+            "rmse": 0.6722,
+            "r2_score": 0.175
+        },
+        "Poisson Regressor": {
+            "mae": 0.4118,
+            "rmse": 0.6852,
+            "r2_score": 0.1426
+        },
+        "Random Forest Regressor": {
+            "mae": 0.385,
+            "rmse": 0.6953,
+            "r2_score": 0.1172
+        }
+    },
+    "feature_importances": {
+        "health_risk_score": 0.2996,
+        "reduced": 0.1846,
+        "illness": 0.1096,
+        "age_years": 0.1056,
+        "income": 0.0837,
+        "health": 0.0634,
+        "freerepat_bin": 0.0338,
+        "gender_male": 0.0306,
+        "total_chronic_count": 0.0304,
+        "private_bin": 0.0175,
+        "freepoor_bin": 0.0148,
+        "nchronic_bin": 0.0137,
+        "lchronic_bin": 0.0127
+    },
+    "cluster_profiles": {
+        "Routine / Low-Risk Population": {
+            "patient_count": 2491,
+            "pct_population": 48.0,
+            "mean_age": 31.7,
+            "mean_illness": 0.69,
+            "mean_reduced_days": 0.19,
+            "mean_health_score": 0.66,
+            "mean_risk_score": 6.13,
+            "mean_doctor_visits": 0.147,
+            "consultation_rate_pct": 11.4
+        },
+        "Acute Impairment / Transitional": {
+            "patient_count": 2420,
+            "pct_population": 46.6,
+            "mean_age": 48.7,
+            "mean_illness": 2.05,
+            "mean_reduced_days": 0.28,
+            "mean_health_score": 1.45,
+            "mean_risk_score": 21.28,
+            "mean_doctor_visits": 0.324,
+            "consultation_rate_pct": 24.5
+        },
+        "High-Burden Chronic / Vulnerable": {
+            "patient_count": 279,
+            "pct_population": 5.4,
+            "mean_age": 49.8,
+            "mean_illness": 2.71,
+            "mean_reduced_days": 11.9,
+            "mean_health_score": 4.15,
+            "mean_risk_score": 63.3,
+            "mean_doctor_visits": 1.498,
+            "consultation_rate_pct": 60.9
+        }
+    }
+}
