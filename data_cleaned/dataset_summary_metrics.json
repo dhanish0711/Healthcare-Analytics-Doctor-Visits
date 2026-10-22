@@ -1,0 +1,63 @@
+{
+    "dataset_name": "Healthcare Analytics for Doctor Visits",
+    "student_name": "Dhanish Ladwani",
+    "total_records": 5190,
+    "zero_visits_count": 4141,
+    "zero_visits_pct": 79.79,
+    "one_plus_visits_count": 1049,
+    "one_plus_visits_pct": 20.21,
+    "mean_visits": 0.3017,
+    "std_visits": 0.7981,
+    "max_visits": 9,
+    "gender_breakdown": {
+        "female": {
+            "count": 2702,
+            "mean_visits": 0.362,
+            "consultation_rate_pct": 24.43
+        },
+        "male": {
+            "count": 2488,
+            "mean_visits": 0.2363,
+            "consultation_rate_pct": 15.64
+        }
+    },
+    "insurance_breakdown": {
+        "Private Insurance": {
+            "count": 2298,
+            "mean_visits": 0.2946,
+            "consultation_rate_pct": 20.02
+        },
+        "Public / Standard": {
+            "count": 1579,
+            "mean_visits": 0.2185,
+            "consultation_rate_pct": 14.19
+        },
+        "Repatriation / Veteran": {
+            "count": 1091,
+            "mean_visits": 0.4665,
+            "consultation_rate_pct": 31.62
+        },
+        "Low-Income Assistance": {
+            "count": 222,
+            "mean_visits": 0.1577,
+            "consultation_rate_pct": 9.01
+        }
+    },
+    "chronic_breakdown": {
+        "No Chronic Illness": {
+            "count": 2493,
+            "mean_visits": 0.1917,
+            "consultation_rate_pct": 13.72
+        },
+        "Non-Limiting Only": {
+            "count": 2092,
+            "mean_visits": 0.3456,
+            "consultation_rate_pct": 23.66
+        },
+        "Activity-Limiting Only": {
+            "count": 605,
+            "mean_visits": 0.6033,
+            "consultation_rate_pct": 35.04
+        }
+    }
+}
